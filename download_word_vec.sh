@@ -1,7 +1,4 @@
-if [ ! -d $_DIRECTORY_NAME ]
-then
-    mkdir data
-    cd model
-    wget https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en.zip
-    unzip -v wiki.en.zip
-fi
+cd data
+wget http://10.140.0.51:443/data/wiki.en.zip
+unzip -v wiki.en.zip
+rm wiki.en.zip
