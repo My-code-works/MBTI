@@ -1,4 +1,11 @@
+from gensim.models.wrappers import FastText
+from nltk.tokenize import word_tokenize
+import nltk
+import numpy as np
 import json
+
+nltk.download('punkt')
+data_path = "data/"
 
 class JsonPre:
     tag2id = {}
@@ -52,9 +59,22 @@ class JsonPre:
                 i["vecs"] = []
                 for x in i["text"]:
                     i["vecs"].append(JsonPre.str2vec(x))
+    @staticmethod
+    def str2vec(test_str):
+        data = word_tokenize(test_str)
+        rtn_vec = []
+        for i in data:
+            if not i in model.wv.vocab:
+                print("The word cannot be found!")
+                continue
+            rtn_vec.append(model[i])
+        return np.mean(np.array(rtn_vec), axis= 0)
 
 if __name__ == '__main__':
-    with open('data/1.json', 'r', encoding='utf-8') as f:
+    # load word_vec model
+    model = FastText.load_fasttext_format(data_path+'wiki.en')
+
+    with open(data_path+'1.json', 'r', encoding='utf-8') as f:
         text = ''.join(f.readlines())
         data = json.loads(text)
     JsonPre.section_split(data)
