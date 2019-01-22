@@ -3,6 +3,7 @@ import json
 class JsonPre:
     tag2id = {}
     id2tag = {}
+    max_para = 0
     @staticmethod
     def getid(tag):
         if tag not in JsonPre.tag2id:
@@ -24,6 +25,7 @@ class JsonPre:
                     continue
                 i["text"] = i["text"].split('\n')
                 new_full.append(i)
+            JsonPre.max_para = max(JsonPre.max_para, len(new_full))
             js["full"]["sectionContents"] = new_full
     @staticmethod
     def tagging(data):
