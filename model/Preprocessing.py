@@ -45,6 +45,13 @@ class JsonPre:
                         tag = "B%d"%(th)
                     i["tags"].append(JsonPre.getid(tag))
                 last = i["depth"]
+    @staticmethod
+    def vectorize(data):
+        for js in data:
+            for i in js["full"]["sectionContents"]:
+                i["vecs"] = []
+                for x in i["text"]:
+                    i["vecs"].append(JsonPre.str2vec(x))
 
 if __name__ == '__main__':
     with open('data/1.json', 'r', encoding='utf-8') as f:
@@ -52,6 +59,7 @@ if __name__ == '__main__':
         data = json.loads(text)
     JsonPre.section_split(data)
     JsonPre.tagging(data)
+    JsonPre.vectorize(data)
     for sec in data[1]["full"]["sectionContents"]:
         print(sec)
         input()

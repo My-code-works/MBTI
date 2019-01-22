@@ -15,6 +15,7 @@ if __name__ == '__main__':
         data = get_json("data/%d.json"%(i))
         JsonPre.section_split(data)
         JsonPre.tagging(data)
+        JsonPre.vectorize(data)
         train += data
     print(len(train), len(JsonPre.tag2id), JsonPre.max_para)
     print(JsonPre.tag2id, JsonPre.id2tag)
