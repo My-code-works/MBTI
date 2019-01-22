@@ -5,7 +5,7 @@ import numpy as np
 import json
 
 nltk.download('punkt')
-data_path = "data/"
+data_path = "../data/"
 
 class JsonPre:
     tag2id = {}
