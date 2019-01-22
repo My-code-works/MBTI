@@ -7,6 +7,10 @@ import json
 nltk.download('punkt')
 data_path = "../data/"
 
+# load word_vec model
+model = FastText.load_fasttext_format(data_path+'wiki.en')
+
+
 class JsonPre:
     tag2id = {}
     id2tag = {}
@@ -71,8 +75,6 @@ class JsonPre:
         return np.mean(np.array(rtn_vec), axis= 0)
 
 if __name__ == '__main__':
-    # load word_vec model
-    model = FastText.load_fasttext_format(data_path+'wiki.en')
 
     with open(data_path+'1.json', 'r', encoding='utf-8') as f:
         text = ''.join(f.readlines())
