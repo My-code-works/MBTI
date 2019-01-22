@@ -5,7 +5,7 @@ import numpy as np
 import json
 
 nltk.download('punkt')
-data_path = "../data/"
+data_path = "./data/"
 
 # load word_vec model
 model = FastText.load_fasttext_format(data_path+'wiki.en')
