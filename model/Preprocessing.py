@@ -1,14 +1,14 @@
-from gensim.models.wrappers import FastText
+# from gensim.models.wrappers import FastText
 from nltk.tokenize import word_tokenize
 import nltk
 import numpy as np
 import json
 
-nltk.download('punkt')
-data_path = "./data/"
+# nltk.download('punkt')
+data_path = "../data/"
 
 # load word_vec model
-model = FastText.load_fasttext_format(data_path+'wiki.en')
+# model = FastText.load_fasttext_format(data_path+'wiki.en')
 
 
 class JsonPre:
@@ -81,7 +81,8 @@ if __name__ == '__main__':
         data = json.loads(text)
     JsonPre.section_split(data)
     JsonPre.tagging(data)
-    JsonPre.vectorize(data)
+    # JsonPre.vectorize(data)
+    print(data[0])
     for sec in data[1]["full"]["sectionContents"]:
         print(sec)
         input()
