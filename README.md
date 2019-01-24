@@ -4,11 +4,22 @@ Google ML Winter Camp Beijing Site 2019 Group Project - 写的代码都队
 ## SmartTab
 SmartTab aims to automatically analyze the structure of a relatively long article/passage, it takes in the raw article and split it into resonable sections.
 
+## Dependency
+
+| **Package**        | **version** |
+|----------------|---------|
+| python         | 3.6.8   |
+| tensorflow-gpu | 1.12    |
+| keras          | 2.2.4   |
+| keras-contrib  | -       |
+| nltk           | 3.4     |
+| FastText       | -       |
+
 ### Method
 We model the problem as a Sequence Labeling problem that takes 2 steps:
 
-* Paragraph embedding: Use BERT as an encoder to encode paragraphs. We have only tested the fixed pre-trained version of BERT model. It is very likely that fine-tuned BERT will perform better. Due to lack of time, we leave it as future work.
-* Sequence Labeling: We tag each paragraph according to its position within the section it belongs to and the relation between it with the neighbor above. More specifically, there are 3 types of tags: B, M and E, which means beginning, middle, end of a section. For tag B, it also has several variants B{int}, where {int} is an integer represents the depth of the paragraph minus the one above it.
+* **Paragraph embedding**: Use BERT as an encoder to encode paragraphs. We have only tested the fixed pre-trained version of BERT model. It is very likely that fine-tuned BERT will perform better. Due to lack of time, we leave it as future work.
+* **Sequence Labeling**: We tag each paragraph according to its position within the section it belongs to and the relation between it with the neighbor above. More specifically, there are 3 types of tags: B, M and E, which means beginning, middle, end of a section. For tag B, it also has several variants B{int}, where {int} is an integer represents the depth of the paragraph minus the one above it.
 
 ### Model
 **BERT** encoder(fixed) + bi-LSTM + CRF to do sequence labeling.
