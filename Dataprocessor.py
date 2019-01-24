@@ -1,4 +1,5 @@
 import json
+from nltk.tokenize import word_tokenize
 import os
 
 
@@ -59,25 +60,51 @@ class Dataprocessor:
         article_texts = []
         article_tags = []
         article_rawtags = []
+        article_vec = []
         for f in jsonfilelist:
             print('loading %s...' % (os.path.basename(f)))
             data = get_json(f)
             self.section_split(data)
             self.tagging(data)
+            
             for article in data:
                 paragraphs = []
                 tags = []
                 rawtags = []
+                rtn = []
+                vec = []
+
                 for sec in article['full']['sectionContents']:
+                    
+                    for item in sec['text'] :
+                        rtn.append(self.str2vec(item))
+                    
+                    vec.append(np.means(rtn, axis=1))
+                        
                     paragraphs.extend(sec['text'])
                     tags.extend(sec['tags'])
                     rawtags.extend(sec['raw_tags'])
+                    
+                article_vec.append(vec)
+                print(article_vec)
                 article_texts.append(paragraphs)
                 article_tags.append(tags)
                 article_rawtags.append(rawtags)
         
         print('Finish loading data! Total %d articles.' % (len(article_texts)))
-        return article_texts, article_tags, article_rawtags
+        return article_vec, article_tags, article_rawtags
+        article_texts = article_vec
+#         return article_texts, article_tags, article_rawtags
+    
+    def str2vec(self, test_str):
+        data = word_tokenize(test_str)
+        rtn_vec = []
+        for i in data:
+            if not i in model.wv.vocab:
+                print("The word cannot be found!")
+                continue
+            rtn_vec.append(model[i])
+        return np.mean(np.array(rtn_vec), axis= 0)
     
 
 if __name__ == '__main__':
