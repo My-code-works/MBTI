@@ -14,7 +14,7 @@ import tensorflow as tf
 import pickle, os
 from utils import *
 from Dataprocessor import Dataprocessor
-from bert_utils import get_all_features, BERTmodel
+from bert_utils import BERTmodel
 
 
 BERT_BASE = os.path.join(os.getcwd(), 'bert/bert_model/uncased_L-12_H-768_A-12')
