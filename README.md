@@ -24,6 +24,8 @@ We model the problem as a Sequence Labeling problem that takes 2 steps:
 ### Model
 **BERT** encoder(fixed) + bi-LSTM + CRF to do sequence labeling.
 
+![](https://github.com/My-code-works/SmartTab/blob/master/model.png)
+
 ### Code
 This repo is a little messy right now, primarily contains:
 * ```BERT-LSTM.ipynb```: Training and testing notebook for the currently best-perform model (BERT(fixed) + bi-LSTM + CRF);
