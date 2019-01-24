@@ -250,6 +250,7 @@ class BERTmodel:
     def __init__(self, bert_config_file, vocab_file, bert_checkpoint, do_lower_case=True, 
                  emb_dim=768, max_seq_len=MAX_SEQ_LENGTH):
         self.layer_indexes = LAYERS
+        self.emb_dim = emb_dim
         self.max_seq_len = max_seq_len
         self.bert_config = modeling.BertConfig.from_json_file(bert_config_file)
         self.tokenizer = tokenization.FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
