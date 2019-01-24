@@ -4,7 +4,7 @@ Google ML Winter Camp Beijing Site 2019 Group Project - 写的代码都队
 ## SmartTab
 SmartTab aims to automatically analyze the structure of a relatively long article/passage, it takes in the raw article and split it into resonable sections.
 
-## Dependency
+### Dependency
 
 | **Package**        | **version** |
 |----------------|---------|
@@ -12,8 +12,8 @@ SmartTab aims to automatically analyze the structure of a relatively long articl
 | tensorflow-gpu | 1.12    |
 | keras          | 2.2.4   |
 | keras-contrib  | -       |
-| nltk           | 3.4     |
-| FastText       | -       |
+| nltk(optional)       | 3.4     |
+| FastText(optional)       | -       |
 
 ### Method
 We model the problem as a Sequence Labeling problem that takes 2 steps:
