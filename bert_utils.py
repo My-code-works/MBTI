@@ -280,7 +280,7 @@ class BERTmodel:
         examples = get_examples(texts)
 
         features = convert_examples_to_features(
-          examples=examples, seq_length=MAX_SEQ_LENGTH, tokenizer=tokenizer)
+          examples=examples, seq_length=MAX_SEQ_LENGTH, tokenizer=self.tokenizer)
         
         unique_id_to_feature = {}
         for feature in features:
@@ -302,7 +302,7 @@ class BERTmodel:
             ret.append(res_feature)
         return ret
         
-    def get_all_features(articles):
+    def get_all_features(self, articles):
         para_counts = []
         all_texts = []
         for article in articles:

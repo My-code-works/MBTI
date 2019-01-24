@@ -1,5 +1,4 @@
 import pickle, os
-from bert_utils import get_all_features
 
 
 def save_train_data(train_texts, train_tags, train_rawtags):
