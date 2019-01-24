@@ -89,4 +89,6 @@ if __name__ == '__main__':
     infermodel = InferenceModel(model_weight_path)
     
     article = ['Some', 'Paragraphs', 'To', 'Tag']
-    labels = infermodel.infer(article)
+    a1 = ['hello', 'world']
+    labels = infermodel.infer(a1)
+    print(labels[:2])
