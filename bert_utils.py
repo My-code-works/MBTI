@@ -10,7 +10,7 @@ import os
 
 LAYERS = [-1, -2, -3, -4]
 MAX_SEQ_LENGTH = 256
-BATCH_SIZE = 64
+BATCH_SIZE = 16
 
 
 class InputExample(object):
@@ -246,82 +246,82 @@ def get_examples(textlist):
     return examples
 
 
-def get_features(texts, bert_config_file, vocab_file, bert_checkpoint, do_lower_case=True, emb_dim=768):
-    tf.logging.set_verbosity(tf.logging.WARN)
+class BERTmodel:
+    def __init__(self, bert_config_file, vocab_file, bert_checkpoint, do_lower_case=True, 
+                 emb_dim=768, max_seq_len=MAX_SEQ_LENGTH):
+        self.layer_indexes = LAYERS
+        self.emb_dim = emb_dim
+        self.max_seq_len = max_seq_len
+        self.bert_config = modeling.BertConfig.from_json_file(bert_config_file)
+        self.tokenizer = tokenization.FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
+        is_per_host = tf.contrib.tpu.InputPipelineConfig.PER_HOST_V2
+        self.run_config = tf.contrib.tpu.RunConfig(
+          master=None,
+          tpu_config=tf.contrib.tpu.TPUConfig(
+              num_shards=8,
+              per_host_input_for_training=is_per_host))
+        
+        self.model_fn = model_fn_builder(
+          bert_config=self.bert_config,
+          init_checkpoint=bert_checkpoint,
+          layer_indexes=self.layer_indexes,
+          use_tpu=False,
+          use_one_hot_embeddings=False)
+        
+        # If TPU is not available, this will fall back to normal Estimator on CPU
+        # or GPU.
+        self.estimator = tf.contrib.tpu.TPUEstimator(
+          use_tpu=False,
+          model_fn=self.model_fn,
+          config=self.run_config,
+          predict_batch_size=BATCH_SIZE)
+        
+    def get_features(self, texts):
+        tf.logging.set_verbosity(tf.logging.WARN)
+        examples = get_examples(texts)
 
-    layer_indexes = LAYERS
+        features = convert_examples_to_features(
+          examples=examples, seq_length=MAX_SEQ_LENGTH, tokenizer=self.tokenizer)
+        
+        unique_id_to_feature = {}
+        for feature in features:
+            unique_id_to_feature[feature.unique_id] = feature
+        
+        input_fn = input_fn_builder(features=features, seq_length=self.max_seq_len)
 
-    bert_config = modeling.BertConfig.from_json_file(bert_config_file)
+        ret = []
+        cnt = 0
+        for result in self.estimator.predict(input_fn, yield_single_examples=True):
+            if cnt % 2000 == 0:
+                print(cnt, '...')
+            cnt += 1
+            res_feature = np.zeros(self.emb_dim)
+            for (j, layer_index) in enumerate(self.layer_indexes):
+                layer_output = result["layer_output_%d" % j]
+                layers = collections.OrderedDict()
+                res_feature += np.array([x for x in layer_output[0:1].flat])
+            ret.append(res_feature)
+        return ret
+        
+    def get_all_features(self, articles):
+        para_counts = []
+        all_texts = []
+        for article in articles:
+            all_texts.extend(article)
+            para_counts.append(len(article))
 
-    tokenizer = tokenization.FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
+        print('Total %d paragraphs' % (len(all_texts)))
+        all_features = self.get_features(all_texts)
 
-    is_per_host = tf.contrib.tpu.InputPipelineConfig.PER_HOST_V2
-    run_config = tf.contrib.tpu.RunConfig(
-      master=None,
-      tpu_config=tf.contrib.tpu.TPUConfig(
-          num_shards=8,
-          per_host_input_for_training=is_per_host))
+        ret = []
+        idx = 0
+        for cnt in para_counts:
+            ret.append(all_features[idx:(idx + cnt)])
+            idx += cnt
+        return ret
 
-    examples = get_examples(texts)
-
-    features = convert_examples_to_features(
-      examples=examples, seq_length=MAX_SEQ_LENGTH, tokenizer=tokenizer)
-
-    unique_id_to_feature = {}
-    for feature in features:
-        unique_id_to_feature[feature.unique_id] = feature
-
-    model_fn = model_fn_builder(
-      bert_config=bert_config,
-      init_checkpoint=bert_checkpoint,
-      layer_indexes=layer_indexes,
-      use_tpu=False,
-      use_one_hot_embeddings=False)
-
-    # If TPU is not available, this will fall back to normal Estimator on CPU
-    # or GPU.
-    estimator = tf.contrib.tpu.TPUEstimator(
-      use_tpu=False,
-      model_fn=model_fn,
-      config=run_config,
-      predict_batch_size=BATCH_SIZE)
-
-    input_fn = input_fn_builder(features=features, seq_length=MAX_SEQ_LENGTH)
-
-    ret = []
-    cnt = 0
-    for result in estimator.predict(input_fn, yield_single_examples=True):
-        if cnt % 2000 == 0:
-            print(cnt, '...')
-        cnt += 1
-        res_feature = np.zeros(emb_dim)
-        for (j, layer_index) in enumerate(layer_indexes):
-            layer_output = result["layer_output_%d" % j]
-            layers = collections.OrderedDict()
-            res_feature += np.array([x for x in layer_output[0:1].flat])
-        ret.append(res_feature)
     
-    return ret
-
-
-def get_all_features(articles, bert_config_file, vocab_file, bert_checkpoint, do_lower_case=True, emb_dim=768):
-    para_counts = []
-    all_texts = []
-    for article in articles:
-        all_texts.extend(article)
-        para_counts.append(len(article))
-    
-    print('Total %d paragraphs' % (len(all_texts)))
-    all_features = get_features(all_texts, bert_config_file, vocab_file, bert_checkpoint, do_lower_case)
-    
-    ret = []
-    idx = 0
-    for cnt in para_counts:
-        ret.append(all_features[idx:(idx + cnt)])
-        idx += cnt
-    return ret
-
-    
+'''    
 if __name__ == '__main__':
     BERT_BASE = os.getenv('BERT_BASE_DIR')
     bert_config_file = os.path.join(BERT_BASE, 'bert_config.json')
@@ -332,5 +332,6 @@ if __name__ == '__main__':
     features = get_features(test, bert_config_file, vocab_file, bert_checkpoint)
     print(len(features))
     print(len(features[0]), len(features[1]))
+'''
     
     
