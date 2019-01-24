@@ -76,7 +76,7 @@ class InferenceModel:
             f = f[0:self.input_length]
             X.append(f)
 
-        test_pred = self.LSTMmodel.model.predict(np.array(testX), verbose=1)
+        test_pred = self.LSTMmodel.model.predict(np.array(X), verbose=1)
         labels = []
         test_pred = test_pred[0]
         for p in test_pred:
