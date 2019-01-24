@@ -1,0 +1,56 @@
+Train on 4500 samples, validate on 500 samples
+Epoch 1/5
+4500/4500 [==============================] - 236s 53ms/step - loss: 0.0904 - crf_accuracy: 0.9242 - val_loss: 0.0919 - val_crf_accuracy: 0.9254
+Epoch 2/5
+4500/4500 [==============================] - 239s 53ms/step - loss: 0.0860 - crf_accuracy: 0.9262 - val_loss: 0.1105 - val_crf_accuracy: 0.9088
+Epoch 3/5
+4500/4500 [==============================] - 237s 53ms/step - loss: 0.0821 - crf_accuracy: 0.9271 - val_loss: 0.0940 - val_crf_accuracy: 0.9218
+Epoch 4/5
+4500/4500 [==============================] - 237s 53ms/step - loss: 0.0781 - crf_accuracy: 0.9289 - val_loss: 0.1176 - val_crf_accuracy: 0.9094
+Epoch 5/5
+4500/4500 [==============================] - 237s 53ms/step - loss: 0.0751 - crf_accuracy: 0.9302 - val_loss: 0.0906 - val_crf_accuracy: 0.9214
+1000/1000 [==============================] - 24s 24ms/step
+True: 24738, False: 10223, Acc: 0.707588
+Saved to save_model/base_1_1.h5
+Train on 3600 samples, validate on 400 samples
+Epoch 1/5
+3600/3600 [==============================] - 190s 53ms/step - loss: 0.1354 - crf_accuracy: 0.8952 - val_loss: 0.1146 - val_crf_accuracy: 0.9033
+Epoch 2/5
+3600/3600 [==============================] - 189s 53ms/step - loss: 0.1268 - crf_accuracy: 0.8984 - val_loss: 0.1128 - val_crf_accuracy: 0.9045
+Epoch 3/5
+3600/3600 [==============================] - 191s 53ms/step - loss: 0.1221 - crf_accuracy: 0.9001 - val_loss: 0.1111 - val_crf_accuracy: 0.9055
+Epoch 4/5
+3600/3600 [==============================] - 75s 21ms/step - loss: 0.1176 - crf_accuracy: 0.9018 - val_loss: 0.1098 - val_crf_accuracy: 0.9056
+Epoch 5/5
+3600/3600 [==============================] - 48s 13ms/step - loss: 0.1138 - crf_accuracy: 0.9030 - val_loss: 0.1079 - val_crf_accuracy: 0.9058
+1000/1000 [==============================] - 6s 6ms/step
+True: 24948, False: 10013, Acc: 0.713595
+Saved to save_model/base_1_2.h5
+Train on 4500 samples, validate on 500 samples
+Epoch 1/5
+4500/4500 [==============================] - 60s 13ms/step - loss: 0.1252 - crf_accuracy: 0.8967 - val_loss: 0.1206 - val_crf_accuracy: 0.8972
+Epoch 2/5
+4500/4500 [==============================] - 61s 14ms/step - loss: 0.1198 - crf_accuracy: 0.8988 - val_loss: 0.1181 - val_crf_accuracy: 0.8999
+Epoch 3/5
+4500/4500 [==============================] - 61s 14ms/step - loss: 0.1155 - crf_accuracy: 0.9006 - val_loss: 0.1168 - val_crf_accuracy: 0.9012
+Epoch 4/5
+4500/4500 [==============================] - 60s 13ms/step - loss: 0.1118 - crf_accuracy: 0.9013 - val_loss: 0.1173 - val_crf_accuracy: 0.8980
+Epoch 5/5
+4500/4500 [==============================] - 92s 20ms/step - loss: 0.1078 - crf_accuracy: 0.9029 - val_loss: 0.1144 - val_crf_accuracy: 0.8998
+1000/1000 [==============================] - 24s 24ms/step
+True: 25052, False: 9909, Acc: 0.716570
+Saved to save_model/base_1_3.h5
+Train on 4500 samples, validate on 500 samples
+Epoch 1/5
+4500/4500 [==============================] - 239s 53ms/step - loss: 0.1112 - crf_accuracy: 0.9005 - val_loss: 0.1037 - val_crf_accuracy: 0.9024
+Epoch 2/5
+4500/4500 [==============================] - 238s 53ms/step - loss: 0.1063 - crf_accuracy: 0.9026 - val_loss: 0.1003 - val_crf_accuracy: 0.9051
+Epoch 3/5
+4500/4500 [==============================] - 235s 52ms/step - loss: 0.1024 - crf_accuracy: 0.9037 - val_loss: 0.0997 - val_crf_accuracy: 0.9063
+Epoch 4/5
+4500/4500 [==============================] - 237s 53ms/step - loss: 0.0997 - crf_accuracy: 0.9039 - val_loss: 0.0967 - val_crf_accuracy: 0.9054
+Epoch 5/5
+4500/4500 [==============================] - 238s 53ms/step - loss: 0.0958 - crf_accuracy: 0.9058 - val_loss: 0.0958 - val_crf_accuracy: 0.9075
+1000/1000 [==============================] - 24s 24ms/step
+True: 25259, False: 9702, Acc: 0.722491
+Saved to save_model/base_1_4.h5
