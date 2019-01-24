@@ -294,7 +294,7 @@ class BERTmodel:
             if cnt % 2000 == 0:
                 print(cnt, '...')
             cnt += 1
-            res_feature = np.zeros(emb_dim)
+            res_feature = np.zeros(self.emb_dim)
             for (j, layer_index) in enumerate(self.layer_indexes):
                 layer_output = result["layer_output_%d" % j]
                 layers = collections.OrderedDict()
