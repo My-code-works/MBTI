@@ -14,7 +14,7 @@ import tensorflow as tf
 import pickle, os
 from utils import *
 from Dataprocessor import Dataprocessor
-from bert_utils import get_all_features
+from bert_utils import get_all_features, BERTmodel
 
 
 BERT_BASE = os.path.join(os.getcwd(), 'bert/bert_model/uncased_L-12_H-768_A-12')
@@ -65,9 +65,10 @@ class InferenceModel:
         self.num_tags = num_tags
         self.dataprocessor = Dataprocessor()
         self.LSTMmodel.model.load_weights(model_weight_path)
+        self.BERTmodel = BERTmodel(bert_config_file, vocab_file, bert_checkpoint)
     
     def infer(self, parag_list):
-        feature = get_all_features([parag_list], bert_config_file, vocab_file, bert_checkpoint)
+        feature = self.BERTmodel.get_all_features([parag_list])
         
         X = [] # X is 3D: article, paragraph, embedding; Y is 2D: article, paragraph
         for f in feature:
