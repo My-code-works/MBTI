@@ -1,7 +1,7 @@
 # SmartTab
 Google ML Winter Camp Beijing Site 2019 Group Project - 写的代码都队  
 
-## SmartTab
+## Introduction
 SmartTab aims to automatically analyze the structure of a relatively long article/passage, it takes in the raw article and split it into resonable sections.
 
 ### Dependency
